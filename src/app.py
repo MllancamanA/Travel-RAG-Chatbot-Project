@@ -80,9 +80,9 @@ if st.sidebar.button("Clear"):
 # Sidebar
 # ====================
 with st.sidebar:
-    st.header("Wanderlust Travels") 
+    st.header("WanderNest Travels") 
     st.info("""
-    **Wanderlust Travels AI Assistant**
+    **WanderNest Travels AI Assistant**
     
     This chatbot helps you with:
     - ✈️ Flight policies & routes
@@ -137,7 +137,7 @@ search_button = st.button("🔍 Search", use_container_width=True, type="primary
 # Search Logic
 # ====================
 if search_button and engine and query_text:
-    st.session_state.query_count +=   
+    st.session_state.query_count +=1   
     
     st.markdown("---")
     with st.spinner("🔍 Searching travel knowledge base..."):  # HINT: "🔍 Searching travel knowledge base..."
@@ -145,7 +145,7 @@ if search_button and engine and query_text:
         
         try:
             # HINT: Search for relevant documents
-            results, processed_query = engine.search(query_text, k=5) 
+            results, processed_query = engine.search_by_text(query_text, k=5) 
             
             # HINT: Generate AI response
             generated_response = engine.generate_response(results, query_text)

@@ -23,9 +23,9 @@ class Config:
     # HINT: Load Azure OpenAI credentials from environment
     AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY") 
     AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT") 
-    AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2023-05-15-preview")  
-    AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "gpt-4")  
-    AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-small")  # HINT: "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-small"
+    AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")  
+    AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")  
+    AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT = os.getenv("AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT")  # HINT: "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-small"
     
     # ====================
     # Azure AI Search Configuration (Only vector store - no ChromaDB)
@@ -33,13 +33,13 @@ class Config:
     # HINT: Load Azure AI Search credentials
     AZURE_SEARCH_ENDPOINT = os.getenv("AZURE_SEARCH_ENDPOINT") 
     AZURE_SEARCH_KEY = os.getenv("AZURE_SEARCH_KEY") 
-    AZURE_SEARCH_INDEX_NAME = os.getenv("AZURE_SEARCH_INDEX_NAME", "travel-kb-index")  # HINT: "AZURE_SEARCH_INDEX_NAME", "travel-kb-index"
+    AZURE_SEARCH_INDEX_NAME = os.getenv("AZURE_SEARCH_INDEX_NAME")  # HINT: "AZURE_SEARCH_INDEX_NAME", "travel-kb-index"
     
     # ====================
     # Azure Storage (Optional)
     # ====================
     AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")  
-    AZURE_STORAGE_CONTAINER_NAME = os.getenv("AZURE_STORAGE_CONTAINER_NAME", "travel-documents")  # HINT: "AZURE_STORAGE_CONTAINER_NAME", "travel-documents"
+    AZURE_STORAGE_CONTAINER_NAME = os.getenv("AZURE_STORAGE_CONTAINER_NAME")  # HINT: "AZURE_STORAGE_CONTAINER_NAME", "travel-documents"
     
     # ====================
     # Azure Content Safety (Optional)

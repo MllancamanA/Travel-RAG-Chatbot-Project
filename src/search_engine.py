@@ -45,7 +45,7 @@ class TravelSearchEngine:
         self.embeddings = AzureOpenAIEmbeddings(
             api_key=Config.AZURE_OPENAI_API_KEY,
             azure_endpoint=Config.AZURE_OPENAI_ENDPOINT,
-            azure_deployment=Config.AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT_NAME,
+            azure_deployment=Config.AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT,
             api_version=Config.AZURE_OPENAI_API_VERSION,
         )
         
