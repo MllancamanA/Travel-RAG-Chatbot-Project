@@ -31,10 +31,11 @@ class ComplianceChecker:
         is_compliant = True 
         
         # HINT: Check for PII using Guardrail PII Detector
-        pii_result = self.pii_detector.check_pii(text)
+        pii_result = self.pii_detector.detect(text)
         
         detected_pii = []
-        if pii_result['detected']:
+        if pii_result.get('detected', False):
+       # if pii_result['detected']:
             for entity in pii_result['entities']:
                 detected_pii.append(f"{entity['type']}: {entity['value']}")
         
@@ -53,5 +54,5 @@ class ComplianceChecker:
             'compliant': is_compliant,  
             'violations': violations,  
             'remediation': remediation,  
-            'detected_pii_count': pii_result['detected_pii_count']
+            'detected_pii_count': pii_result.get('detected_pii_count', 0)
         }

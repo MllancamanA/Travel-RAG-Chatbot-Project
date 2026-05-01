@@ -99,14 +99,14 @@ class SafetyValidator:
         is_safe = True
         
         # HINT: 1. Local Content Safety Guardrail (Keywords & Regex)
-        local_result = self.content_safety.validate(text) 
+        local_result = self.content_safety.check(text) 
         if not local_result['is_safe']:  
             is_safe = False  # HINT: False
             for flag in local_result['flags']:  # HINT: 'flags'
-                flags.append(f"Unsafe Keyword ({flag['keyword']}): {flag['reason']}")
+                flags.append(f"Unsafe Keyword ({flag['keyword']})")
 
         # HINT: 2. Specific Injection Checks
-        for pattern in self.prompt_injection_patterns: 
+        for pattern in self.injection_patterns: 
             if re.search(pattern, text, re.IGNORECASE): 
                 is_safe = False  
                 flags.append(f"Prompt Injection Detected: {pattern}")

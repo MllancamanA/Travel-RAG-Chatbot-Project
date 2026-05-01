@@ -148,7 +148,7 @@ if search_button and engine and query_text:
             results, processed_query = engine.search_by_text(query_text, k=5) 
             
             # HINT: Generate AI response
-            generated_response = engine.generate_response(results, query_text)
+            generated_response = engine.synthesize_response(results, query_text)
             
             latency = time.time() - start_time
             st.info(f"✅ Search completed in {latency:.2f}s")

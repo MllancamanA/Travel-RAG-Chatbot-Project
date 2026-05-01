@@ -33,11 +33,11 @@ class GovernanceGate:
         safety_result = self.safety_validator.validate(text)
         
         # HINT: 2. Compliance Check (ensure no PII in query if strict)
-        compliance_result = self.compliance_checker.check(text, compliance_standards=["GDPR"])
+        compliance_result = self.compliance_checker.check_compliance(text, compliance_standards=["GDPR"])
         
         # HINT: Combine results - passed only if both checks pass
-        passed = safety_result['passed'] and compliance_result['passed'] 
-        violations = safety_result['violations'] + compliance_result['violations'] 
+        passed = safety_result.get('is_safe', False) and compliance_result.get('compliant', False)
+        violations = safety_result.get('flags', []) + compliance_result.get('violations', [])
         
         result = {
             'passed': passed, 
@@ -57,10 +57,10 @@ class GovernanceGate:
         """
         # HINT: Similar checks for output
         safety_result = self.safety_validator.validate(text) 
-        compliance_result = self.compliance_checker.check(text, compliance_standards=["GDPR"]) 
+        compliance_result = self.compliance_checker.check_compliance(text, compliance_standards=["GDPR"]) 
         
-        passed = safety_result['passed'] and compliance_result['passed']  
-        violations = safety_result['violations'] + compliance_result['violations']  
+        passed = safety_result.get('is_safe', False) and compliance_result.get('compliant', False)
+        violations = safety_result.get('flags', []) + compliance_result.get('violations', [])
         
         result = {
             'passed': passed,  

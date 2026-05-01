@@ -106,10 +106,10 @@ class TravelChatbotEvaluator:
             
             try:
                 # HINT: Search for relevant documents
-                docs, _ = self.engine.search(question, k=5) 
+                docs, _ = self.engine.search_by_text(question, k=5) 
                 
                 # HINT: Generate answer
-                answer = self.engine.generate_response(docs, question)
+                answer = self.engine.synthesize_response(docs, question)
                 
                 # HINT: Collect contexts (retrieved documents)
                 context_texts = [doc.page_content for doc in docs] # o content of retrieved documents

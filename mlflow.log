@@ -1,0 +1,71 @@
+[MLflow] Security middleware enabled with default settings (localhost-only). To allow connections from other hosts, use --host 0.0.0.0 and configure --allowed-hosts and --cors-allowed-origins.
+INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+INFO:     Started parent process [24841]
+INFO:     Started server process [24846]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [24845]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [24844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [24843]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     190.22.12.62:0 - "GET / HTTP/1.1" 200 OK
+INFO:     190.22.12.62:0 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58432 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58432 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58438 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58438 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58438 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58952 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58952 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58952 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58952 - "GET /api/2.0/mlflow/runs/get?run_uuid=f7d50492864746df86a498d97fd291a2&run_id=f7d50492864746df86a498d97fd291a2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58952 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK
+INFO:     190.22.12.62:0 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48766 - "HEAD /.aws/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48770 - "HEAD /.ada/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48786 - "HEAD /.ssh/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48800 - "HEAD /.midway/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35790 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35790 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35792 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35792 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35792 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59998 - "GET /api/2.0/mlflow/runs/get?run_uuid=98ec92645dbf48238abf459909597099&run_id=98ec92645dbf48238abf459909597099 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59998 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44780 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44780 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44790 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44790 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44790 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/set-tag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "GET /api/2.0/mlflow/runs/get?run_uuid=947800e835d043e5b1845c0412d996a5&run_id=947800e835d043e5b1845c0412d996a5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "GET /api/2.0/mlflow/runs/get?run_uuid=ccc3c672e23d4954be8a5b8edd271610&run_id=ccc3c672e23d4954be8a5b8edd271610 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51836 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34670 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34670 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40224 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40224 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40224 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "GET /api/2.0/mlflow/experiments/get-by-name?experiment_name=travel-search-rag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/set-tag HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "GET /api/2.0/mlflow/runs/get?run_uuid=dc229160b856460f81e2f21e428eff6b&run_id=dc229160b856460f81e2f21e428eff6b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "GET /api/2.0/mlflow/runs/get?run_uuid=4a251671023a494db74209f11cc259ec&run_id=4a251671023a494db74209f11cc259ec HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 OK

@@ -19,6 +19,10 @@ from src.config import Config
 
 import mlflow
 
+import mlflow
+
+if mlflow.active_run():
+    mlflow.end_run()
 
 def ingest_travel_documents():
     """
@@ -47,11 +51,16 @@ def ingest_travel_documents():
     # MLflow Setup (fail-safe)
     # ====================
     mlflow_active = False
-    if Config.MLFLOW_TRACKING_URI:  
+    if Config.MLFLOW_TRACKING_URI:
         try:
-            mlflow.set_experiment(Config.MLFLOW_EXPERIMENT_NAME)  
-            mlflow.start_run(run_name="document_ingestion")  # HINT: "document_ingestion"
+            mlflow.set_experiment(Config.MLFLOW_EXPERIMENT_NAME)
+
+            while mlflow.active_run():
+                mlflow.end_run()
+
+            mlflow.start_run(run_name="document_ingestion")
             mlflow_active = True
+
         except Exception as e:
             print(f"⚠️  MLflow disabled: {e}")
 
@@ -82,7 +91,7 @@ def ingest_travel_documents():
         # Batch Ingestion
         # ====================
         print("\n📥 Indexing documents to Azure AI Search...")
-        batch_size = ___  # HINT: 50
+        batch_size = 50  # HINT: 50
         total_batches = (len(chunks) + batch_size - 1) // batch_size
 
         ingested_count = 0
@@ -120,7 +129,7 @@ def ingest_travel_documents():
         # ====================
         print("\n🔍 Verifying index...")
         test_query = "What are the baggage policies for international flights?"  # HINT: Example test query
-        results, _ = engine.search(test_query, k=5) 
+        results, _ = engine.search_by_text(test_query, k=5) 
 
         if results:
             print("✅ Index verification successful!")

@@ -68,7 +68,7 @@ class TravelSearchEngine:
         # HINT: Set MLflow experiment name from Config
         mlflow.set_experiment(Config.MLFLOW_EXPERIMENT_NAME)  
         
-        with mlflow.start_run(run_name="search_travel_info"):
+        with mlflow.start_run(run_name="search_travel_info", nested=True):
             print(f"DEBUG: Text Query: {query_text}")
             
             # HINT: Validate input using governance gate
@@ -76,7 +76,11 @@ class TravelSearchEngine:
             
             if not gov_check['passed']:  
                 # HINT: Log governance failure event
-                mlflow.log_event("GovernanceCheckFailed", {"violations": gov_check['violations']}) 
+                violations = gov_check.get('violations', [])
+
+                mlflow.set_tag("governance_status", "failed")
+                mlflow.log_param("governance_violations", str(violations))
+                mlflow.log_metric("governance_violations_count", len(violations))
                 return [], "Query blocked by security checks."
 
             # HINT: Log parameters to MLflow
@@ -107,7 +111,7 @@ class TravelSearchEngine:
         
         mlflow.set_experiment(Config.MLFLOW_EXPERIMENT_NAME)
         
-        with mlflow.start_run(run_name="synthesize_response"):
+        with mlflow.start_run(run_name="synthesize_response", nested=True):
             # HINT: Handle case when no documents found
             if not docs:
                 return "I couldn't find relevant information in our knowledge base. Please try rephrasing your question or ask something else about travel policies, FAQs, or routes." 

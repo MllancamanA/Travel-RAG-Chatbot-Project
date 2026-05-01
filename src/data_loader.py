@@ -17,7 +17,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
 # HINT: Data directory should point to "data"
-DATA_DIR = Path("___") 
+DATA_DIR = Path("data") 
 
 
 class TravelDataLoader:
@@ -28,7 +28,7 @@ class TravelDataLoader:
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,  # HINT: 1000
             chunk_overlap=200,  # HINT: 200
-            separators=  
+            separators=["\n\n", "\n", " ", ""]  
         )
 
     def load_pdfs_from_data_directory(self) -> List[Document]:
