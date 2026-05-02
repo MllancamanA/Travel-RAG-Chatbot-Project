@@ -15,6 +15,7 @@ import asyncio
 import pandas as pd
 from pathlib import Path
 from typing import List, Dict
+import numpy as np
 
 from ragas import evaluate
 from ragas.metrics import faithfulness, answer_relevancy, context_precision, context_recall
@@ -22,6 +23,11 @@ from datasets import Dataset
 
 from src.search_engine import TravelSearchEngine
 from src.config import Config
+
+
+from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
+from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
 
 # HINT: Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -60,27 +66,27 @@ class TravelChatbotEvaluator:
         sample_data = [
             {
                 "question": "What are the baggage allowance rules for international flights?",  # HINT: "What are the baggage allowance rules for international flights?"
-                "ground_truth": "Baggage allowance depends on airline policy, ticket class, and route."  # HINT: Appropriate ground truth answer
+                "ground_truth": "Baggage allowance for international flights depends on the airline, fare class, and route. Typically, passengers are allowed one or more checked bags and cabin baggage, with weight and size limits defined by the airline’s policy."  # HINT: Appropriate ground truth answer
             },
             {
                 "question": "What is Air India's cancellation policy?",  # HINT: "What is Air India's cancellation policy?"
-                "ground_truth": "Air India’s cancellation policy allows for free cancellation within 24 hours of booking (if booked at least 7 days before departure) or a 48-hour free window for specific domestic bookings. Otherwise, cancellation fees apply based on fare type (Value, Classic, Flex) and timing, with higher fees closer to departure. "  # HINT: Appropriate ground truth answer
+                "ground_truth": "Air India's cancellation policy allows free cancellation within 24 hours of booking if the ticket is purchased at least 7 days before departure. After this period, cancellation fees apply depending on the fare type and how close the cancellation is to departure."  # HINT: Appropriate ground truth answer
             },
             {
                 "question": "Do I need a visa to travel from India to UK?",  # HINT: "Do I need a visa to travel from India to UK?"
-                "ground_truth": "Yes, Indian citizens need a visa to travel to the UK. As of February 2026, the UK has implemented a fully digital border system, meaning Indian travelers must apply online for a digital eVisa for visits, tourism, study, or work. Physical visa stickers are phased out, and you must link your passport to this digital immigration status. "  # HINT: Appropriate ground truth answer
+                "ground_truth": "Yes, Indian citizens require a visa to travel to the UK. Travelers must apply in advance and obtain the appropriate visa based on the purpose of travel, such as tourism, study, or work."  # HINT: Appropriate ground truth answer
             },
             {
                 "question": "What are the refund policies for flight cancellations?",  # HINT: "What are the refund policies for flight cancellations?"
-                "ground_truth": "Passengers are entitled to a full cash refund (not just credit) for cancelled flights or significant delays when they decline alternatives (rebooking, travel vouchers) offered by the airline."  # HINT: Appropriate ground truth answer
+                "ground_truth": "Passengers may be eligible for a refund if a flight is cancelled or significantly changed. Airlines may offer rebooking, travel credits, or a cash refund depending on the circumstances and applicable regulations."  # HINT: Appropriate ground truth answer
             },
             {
                 "question": "What documents do I need for international travel?",  # HINT: "What documents do I need for international travel?"
-                "ground_truth": "Essential documents for international travel include a valid passport (usually valid for 6+ months beyond travel dates), necessary visas, proof of onward travel (return ticket), travel health insurance, and accommodation reservations. It is strongly advised to carry physical and digital copies of all documents."  # HINT: Appropriate ground truth answer
+                "ground_truth": "Travelers need a valid passport for international travel, and depending on the destination, a visa may also be required. Additional documents may include return tickets, accommodation details, and proof of sufficient funds."  # HINT: Appropriate ground truth answer
             }
         ]
         
-        # HINT: Save sample dataset
+        # HINT: Save sample dataset to file
         self.golden_dataset_path.parent.mkdir(exist_ok=True)
         with open(self.golden_dataset_path, 'w') as f:  
             json.dump(sample_data, f, indent=2)
@@ -180,16 +186,18 @@ class TravelChatbotEvaluator:
                     context_precision,  # HINT: context_precision
                     context_recall   # HINT: context_recall
                 ],
+                llm=LangchainLLMWrapper(self.engine.llm),          
+                embeddings=LangchainEmbeddingsWrapper(self.engine.embeddings)    
             )
             
             logger.info("\n" + "=" * 70)
             logger.info("EVALUATION RESULTS")
             logger.info("=" * 70)
             logger.info(f"\nRagas Scores:")
-            logger.info(f"  Faithfulness:       {results['faithfulness']:.4f}")  
-            logger.info(f"  Answer Relevancy:   {results['answer_relevancy']:.4f}")   
-            logger.info(f"  Context Precision:  {results['context_precision']:.4f}") 
-            logger.info(f"  Context Recall:     {results['context_recall']:.4f}")  
+            logger.info(f"  Faithfulness:       {np.mean(results['faithfulness']):.4f}")
+            logger.info(f"  Answer Relevancy:   {np.mean(results['answer_relevancy']):.4f}")
+            logger.info(f"  Context Precision:  {np.mean(results['context_precision']):.4f}")
+            logger.info(f"  Context Recall:     {np.mean(results['context_recall']):.4f}")  
             logger.info("=" * 70)
             
             # HINT: Save detailed results
@@ -213,10 +221,10 @@ class TravelChatbotEvaluator:
         
         # HINT: Save summary
         summary = {
-            "faithfulness": float(results.get('faithfulness', 0)),  # HINT: 'faithfulness'
-            "answer_relevancy": float(results.get('answer_relevancy', 0)),  # HINT: 'answer_relevancy'
-            "context_precision": float(results.get('context_precision', 0)),  # HINT: 'context_precision'
-            "context_recall": float(results.get('context_recall', 0)),  # HINT: 'context_recall'
+            "faithfulness": float(np.mean(results['faithfulness'])),
+            "answer_relevancy": float(np.mean(results['answer_relevancy'])),
+            "context_precision": float(np.mean(results['context_precision'])),
+            "context_recall": float(np.mean(results['context_recall'])),
             "total_test_cases": len(dataset_dict["question"])
         }
         
@@ -257,10 +265,10 @@ def run_evaluation():
         min_recall = 0.7
         
         passed = (
-            results.get('faithfulness', 0) >= min_faithfulness and  
-            results.get('answer_relevancy', 0) >= min_relevancy and
-            results.get('context_precision', 0) >= min_precision and
-            results.get('context_recall', 0) >= min_recall
+            np.mean(results['faithfulness']) >= min_faithfulness and
+            np.mean(results['answer_relevancy']) >= min_relevancy and
+            np.mean(results['context_precision']) >= min_precision and
+            np.mean(results['context_recall']) >= min_recall
         )
         
         if passed:

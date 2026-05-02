@@ -6,6 +6,7 @@ TASK: Implement keyword-based content safety checking
 """
 
 import logging
+import re
 from typing import Dict, List
 
 logger = logging.getLogger(__name__)
@@ -16,14 +17,14 @@ class ContentSafety:
     def __init__(self):
         # HINT: Define unsafe keyword patterns for different categories
         self.unsafe_patterns = {
-            'violence': ['kill', 'attack', 'harm', 'violence', 'assault', 'murder', 'threat', 'aggression', 'robbery', 'kidnap', 'violation', 'terrorism', 'fraud'],  # HINT: List of violence-related keywords like ['kill', 'attack', etc.]
-            'hate_speech': ['hate', 'discriminate', 'hate speech', ''],  # HINT: List of hate speech keywords like
-            'profanity': ['damn', 'hell', 'crap', 'bloody', 'bastard', 'shit', 'son of a bitch'],  # HINT: List of profanity keywords
-            'personal_attack': ['stupid', 'idiot', 'dumb', 'fool', 'moron', 'retard', 'jerk', 'asshole', 'bitch', 'idiot', 'ass', 'nigger', 'cunt']  # HINT: List of personal attack keywords like
+            'violence': ['kill', 'murder', 'assault', 'attack','shoot', 'stab', 'bomb', 'terrorism', 'kidnap', 'rape'],  # HINT: List of violence-related keywords like ['kill', 'attack', etc.]
+            'hate_speech': ['nigger', 'faggot', 'kike', 'chink','hate you', 'go back to your country'],  # HINT: List of hate speech keywords like
+            'profanity': ['shit', 'fuck', 'bitch', 'bastard', 'cunt'],  # HINT: List of profanity keywords
+            'personal_attack': ['idiot', 'stupid', 'moron', 'dumb','asshole', 'piece of shit']  # HINT: List of personal attack keywords like
         }
         
         # HINT: Define travel-specific red flags
-        self.travel_red_flags = ['fraud', 'fake booking', 'scam', 'unauthorized access', 'data breach', 'identity theft', 'cyber attack', 'data leak', 'privacy violation', 'data misuse', 'cybercrime', 'phishing', 'data hijacking', 'cyber espionage', 'cyber terrorism']  # HINT: List like ['fraud', 'fake booking', 'scam', etc.]
+        self.travel_red_flags = ["fake booking","scam","phishing","identity theft","unauthorized access","stolen passport","stolen credit card","fake passport","fake visa","visa fraud","ticket fraud","payment fraud","account takeover"]  # HINT: List like ['fraud', 'fake booking', 'scam', etc.]
     
     def check(self, text: str) -> Dict:
         """
@@ -42,7 +43,7 @@ class ContentSafety:
         # HINT: Check general unsafe patterns
         for category, keywords in self.unsafe_patterns.items(): 
             for keyword in keywords:
-                if keyword in text_lower:  
+                if re.search(rf"\b{re.escape(keyword)}\b", text_lower):  
                     flags.append({
                         'category': category,
                         'keyword': keyword,   
@@ -53,7 +54,7 @@ class ContentSafety:
         
         # HINT: Check travel-specific red flags
         for red_flag in self.travel_red_flags: 
-            if red_flag in text_lower:
+            if re.search(rf"\b{re.escape(red_flag)}\b", text_lower):
                 flags.append({
                     'category': 'travel_risk', 
                     'keyword': red_flag,  

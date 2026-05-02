@@ -37,7 +37,7 @@ class TravelSearchEngine:
             azure_endpoint=Config.AZURE_OPENAI_ENDPOINT,
             api_version=Config.AZURE_OPENAI_API_VERSION,
             deployment_name=Config.AZURE_OPENAI_DEPLOYMENT_NAME,
-            temperature=0.7 
+            temperature=1 
         )
         
         # HINT: Initialize Azure OpenAI Embeddings
@@ -73,14 +73,12 @@ class TravelSearchEngine:
             
             # HINT: Validate input using governance gate
             gov_check = self.governance_gate.validate_input(query_text)
-            
+            print(f"DEBUG: Gov check result: {gov_check}") 
             if not gov_check['passed']:  
                 # HINT: Log governance failure event
-                violations = gov_check.get('violations', [])
-
                 mlflow.set_tag("governance_status", "failed")
-                mlflow.log_param("governance_violations", str(violations))
-                mlflow.log_metric("governance_violations_count", len(violations))
+                mlflow.log_param("governance_violations", str(gov_check['violations']))
+                mlflow.log_metric("governance_violations_count", len(gov_check['violations']))
                 return [], "Query blocked by security checks."
 
             # HINT: Log parameters to MLflow
@@ -111,21 +109,20 @@ class TravelSearchEngine:
         
         mlflow.set_experiment(Config.MLFLOW_EXPERIMENT_NAME)
         
-        with mlflow.start_run(run_name="synthesize_response", nested=True):
+        with mlflow.start_run(run_name="synthesize_response"):
             # HINT: Handle case when no documents found
             if not docs:
                 return "I couldn't find relevant information in our knowledge base. Please try rephrasing your question or ask something else about travel policies, FAQs, or routes." 
             
             # HINT: Build context from documents
             # Format: "- {content} (Source: {source})"
-            context = "\n".join([
-                f"- {doc.page_content} (Source: {doc.metadata.get('source', 'Unknown')})" 
+            context = "\n".join([f"- {doc.page_content} (Source: {doc.metadata})" 
                 for doc in docs
             ])
             
             # HINT: Create prompt for LLM
             prompt = f"""
-            You are a helpful travel assistant for Wanderlust Travels, an online travel agency.
+            You are a helpful travel assistant for WanderNest Travels, an online travel agency.
             Use the following information from our knowledge base to answer the customer's question.
             
             Knowledge Base Information:
@@ -133,7 +130,8 @@ class TravelSearchEngine:
             
             Customer Question: "{user_query}"
             
-            Please provide a clear, helpful, and accurate answer based on the information above.
+            #Please provide a clear, helpful, and accurate answer based on the information above.
+            Give a clear and structured answer using bullet points. Avoid unnecessary disclaimers
             If the information is not sufficient, let the customer know and provide general guidance.
             """  # HINT: context, user_query
             
@@ -142,7 +140,7 @@ class TravelSearchEngine:
             
             # HINT: Validate output using governance gate
             gov_check = self.governance_gate.validate_output(response) 
-            
+            print("DEBUG output governance:", gov_check)
             if not gov_check['passed']:  
                 return "I generated a response but it didn't pass safety checks. Please rephrase your question."  # HINT: "I generated a response but it didn't pass safety checks. Please rephrase your question."
             

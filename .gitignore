@@ -9,4 +9,23 @@ venv/
 # Environment variables (CRÍTICO)
 # ====================
 .env
+# ====================
+# vector_store local
+# ====================
+chroma_db/
+
+# ====================
+# Python
+# ====================
+__pycache__/
+*.pyc
+
+# ====================
+# MLflow
+# ====================
+
+mlruns/
+mlartifacts/
+
+
 

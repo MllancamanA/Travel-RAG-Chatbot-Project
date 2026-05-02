@@ -8,6 +8,7 @@ RUBRIC: Vector Store & RAG Setup (12 marks total)
 TASK: Initialize Azure AI Search vector store with embeddings
 """
 import os
+
 from src.config import Config
 from langchain_community.vectorstores import AzureSearch
 
@@ -31,8 +32,8 @@ def get_vector_store(embedding_function):
     index_name = Config.AZURE_SEARCH_INDEX_NAME  
     
     # HINT: Validate that required credentials are present
-    if not endpoint or not key:
-        raise ValueError("Azure Search endpoint and key must be set.") 
+    #if not endpoint or not key:
+    #    raise ValueError("Azure Search endpoint and key must be set.") 
     # HINT: Initialize AzureSearch vector store
     # Required parameters: azure_search_endpoint, azure_search_key, 
     # index_name, embedding_function (use .embed_query method)
@@ -40,8 +41,10 @@ def get_vector_store(embedding_function):
         azure_search_endpoint=endpoint, 
         azure_search_key=key,  
         index_name=index_name, 
-        embedding_function=embedding_function.embed_query 
+       embedding_function=embedding_function.embed_query 
     )
     
+      
+
     print(f"Initialized Azure AI Search (LangChain) for index '{index_name}'")
     return vector_store

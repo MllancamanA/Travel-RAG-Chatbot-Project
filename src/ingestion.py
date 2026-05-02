@@ -107,14 +107,15 @@ def ingest_travel_documents():
 
             try:
                 # HINT: Add documents to vector store
-                engine.vector_store.add_documents(batch) 
+                engine.vector_store.add_documents(batch)
+                 
                 ingested_count += len(batch)
                 time.sleep(0)  # avoid rate limits
 
             except Exception as e:
                 print(f"\n❌ Error indexing batch {i // batch_size + 1}: {e}")
                 failed_count += len(batch)
-
+        
         print(f"\n✅ Ingestion Complete!")
         print(f"   Successfully indexed: {ingested_count} chunks")
         if failed_count > 0:
